@@ -1,4 +1,4 @@
-package packLaurent
+package monModule
 
 import "fmt"
 
