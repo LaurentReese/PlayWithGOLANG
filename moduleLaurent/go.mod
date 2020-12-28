@@ -1,3 +1,3 @@
-module github.com/LaurentReese/monModule
+module github.com/LaurentReese/PlayWithGOLANG/monModule
 
 go 1.15
