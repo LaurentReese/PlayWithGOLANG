@@ -14,6 +14,6 @@ func Naissance() {
 fmt.Println("8/5/1968");
 }
 
-func lieu() {
+func Lieu() {
 fmt.Println("Nice");
 }
