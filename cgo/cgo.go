@@ -15,6 +15,7 @@ import "unsafe"
 // }
 // char *changeString(char *s)
 // { // "poisson" devient "pCHIENn"
+//   printf("adresse de char *s=%p\n", s);	
 //	 s[1] = 'C';
 //	 s[2] = 'H';
 //	 s[3] = 'I';
@@ -38,11 +39,14 @@ func main() {
 
 
 	var s string = "poisson"
+	fmt.Printf("adresse de s=%p\n", &s)
 	fmt.Println("animal=", s)
 	s2 := C.CString(s)
+	fmt.Printf("adresse de s2=%p\n", &s2)	
 	defer C.free(unsafe.Pointer(s2)) // ! needs to include stdlib.h otherwise the compiler will say : could not determine kind of name for C.free
 	// prototype C.GoString :  func C.GoString(*C.char) string
 	s3 := C.GoString(C.changeString(s2))
+	fmt.Printf("adresse de s3=%p\n", &s3)		
 	fmt.Println("animal=", s3)	
 }
 
