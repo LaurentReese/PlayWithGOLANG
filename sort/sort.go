@@ -68,6 +68,23 @@ func main() {
 	sort.Sort(meilleurTri(tabPersonnes))
 	fmt.Println(tabPersonnes)
 	fmt.Println()	
+	
+	// something else, my "own" sort function
+	myTab := []int{12, 5, 4, 1, 2, 3, 8, 7, 6, 9,0}
+	var i int
+	var j int
+
+	for i = 0; i < len(myTab)-1; i++ {
+		for j = 0; j < len(myTab)-1-i; j++ {
+			if myTab[j] > myTab[j+1] {
+				myTab[j], myTab[j+1] = myTab[j+1], myTab[j] // do the swap
+			}
+		}
+	}
+	
+	for index, item := range myTab {
+		fmt.Printf("myTab[%d]=%d\n",index,item)
+	}	
 }
 
 
