@@ -9,36 +9,49 @@
 
 package main
 
-import ("fmt"
-"reflect"
-"strconv"
-"runtime"
+import (
+	"fmt"
+	"reflect"
+	"runtime"
+	"strconv"
 )
 
+type Dummy interface {
+	dummy()
+}
+
 type vehicle interface {
+	Dummy // inheritance
 	getSpeed() uint
 	getNbWheels() uint
 	getPrice() uint
 }
 
-type voiture struct {}
-type velo struct {}
-type fusee struct {}
+type voiture struct{}
+type velo struct{}
+type fusee struct{}
 
-func (voiture) getSpeed() uint {	return 100 }
-func (velo) getSpeed() uint {	return 20}
-func (f fusee) getSpeed() uint {	return 2000} // f est superflu si je n'ai pas besoin des ses champs dans la fonction getSpeed
+func (voiture) dummy() { fmt.Println("dummy car") }      // ma fonction héritée
+func (velo) dummy()    { fmt.Println("dummy bike") }     // ma fonction héritée
+func (fusee) dummy()   { fmt.Println("dummy starship") } // ma fonction héritée
 
-func (voiture) getNbWheels() uint {	return 4}
-func (velo) getNbWheels() uint {	return 2}
-func (fusee) getNbWheels() uint {	return 0}
+func (voiture) getSpeed() uint { return 100 }
+func (velo) getSpeed() uint    { return 20 }
+func (f fusee) getSpeed() uint { return 2000 } // f est superflu si je n'ai pas besoin des ses champs dans la fonction getSpeed
 
-func (voiture) getPrice() uint {	return 30000}
-func (velo) getPrice() uint {	return 300}
-func (fusee) getPrice() uint { return 30000000}
+func (voiture) getNbWheels() uint { return 4 }
+func (velo) getNbWheels() uint    { return 2 }
+func (fusee) getNbWheels() uint   { return 0 }
+
+func (voiture) getPrice() uint { return 30000 }
+func (velo) getPrice() uint    { return 300 }
+func (fusee) getPrice() uint   { return 30000000 }
+
 // Stringers
 func (fusee) String() string { return "Une fusee " }
-func (v voiture) String() string { return "Une voiture qui coute " + strconv.Itoa(int(v.getSpeed())) + " Euros "}
+func (v voiture) String() string {
+	return "Une voiture qui coute " + strconv.Itoa(int(v.getSpeed())) + " Euros "
+}
 func (v velo) String() string { return "Un velo " }
 
 type vehicles []vehicle
@@ -52,20 +65,21 @@ func (p pVehicles) String() string {
 	var myString string
 	for _, one := range p {
 		//fmt.Printf("type=%T\n", *one)
-		switch (reflect.TypeOf(*one) ) {
-			case reflect.TypeOf(vo) :
-				vo = (*one).(voiture)	// type assertion (je suis sûr que ça se passe bien car je vient de tester le type grâce à TypeOf)
-				myString += vo.String()
-			case reflect.TypeOf(ve) :
-				ve = (*one).(velo)		// type assertion		
-				myString += ve.String()					
-			case reflect.TypeOf(fu) :
-				fu = (*one).(fusee)		// type assertion	
-				myString += fu.String()
-			default :
-				_, fileName, fileLine, _ := runtime.Caller(1)
-				s := fmt.Sprintf("véhicule inconnu ==> %s:%d", fileName, fileLine)
-				panic(s)
+
+		switch reflect.TypeOf(*one) {
+		case reflect.TypeOf(vo):
+			vo = (*one).(voiture) // type assertion (je suis sûr que ça se passe bien car je vient de tester le type grâce à TypeOf)
+			myString += vo.String()
+		case reflect.TypeOf(ve):
+			ve = (*one).(velo) // type assertion
+			myString += ve.String()
+		case reflect.TypeOf(fu):
+			fu = (*one).(fusee) // type assertion
+			myString += fu.String()
+		default:
+			_, fileName, fileLine, _ := runtime.Caller(1)
+			s := fmt.Sprintf("véhicule inconnu ==> %s:%d", fileName, fileLine)
+			panic(s)
 		}
 	}
 	return myString
@@ -78,19 +92,19 @@ func main() {
 	var ve velo
 	fmt.Printf("%d\n", ve.getSpeed())
 	var fu fusee
-	fmt.Printf("%d\n", fu.getSpeed())	
-	vehicules := vehicles{v, ve, fu}  // Je pourrais aussi faire "vehicules := []vehicle{v, ve, fu}"
+	fmt.Printf("%d\n", fu.getSpeed())
+	vehicules := vehicles{v, ve, fu} // Je pourrais aussi faire "vehicules := []vehicle{v, ve, fu}"
 	fmt.Println(vehicules)
 
 	//var otherVehicles []*vehicle
 	//var otherVehicles []pVehicle
-	// 2) slice de pointeurs d'objets héritant tous de vehicle	
+	// 2) slice de pointeurs d'objets héritant tous de vehicle
 	var otherVehicles pVehicles
-	z :=  vehicle(v)
+	z := vehicle(v)
 	otherVehicles = append(otherVehicles, &z)
 	zz := vehicle(ve)
 	otherVehicles = append(otherVehicles, &zz)
 	zzz := vehicle(fu)
 	otherVehicles = append(otherVehicles, &zzz)
-	fmt.Println(otherVehicles)	
+	fmt.Println(otherVehicles)
 }
