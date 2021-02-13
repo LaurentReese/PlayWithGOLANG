@@ -7,7 +7,7 @@ import ("testing"
 func TestEmptyPassword(t *testing.T) {
 	b, err := checkPassword("")
     if b || err==nil {
-		t.Fatalf("empty password not well handled")
+		t.Fatalf("empty password not well handled") // t.Errorf is also possible (depending on more or less serious the error is
 	}
 }
 
