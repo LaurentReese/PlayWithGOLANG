@@ -7,8 +7,11 @@ Pour construire le module
 Le nom du package dans laurent.go doit être le nom du module (et du répertoire) : theModule
 
 go mod init github.com/LaurentReese/PlayWithGOLANG/theModule
+
 git add .
+
 git commit
+
 git push
 
 
