@@ -24,6 +24,7 @@ Pour utiliser le module
 écrire un programme essai.go qui importe le module en question, et qui utilise les fonctions du module
 (si le module a été mis à jour et que je veux la dernière version
 effacer go.mod, effacer go.sum, effacer essai
+
 go get -u github.com/LaurentReese/PlayWithGOLANG/theModule
 )  => le -u est très important
 
